@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt</title>
+<body>
+    <div class="receipt">
+        <h1>Receipt</h1>
+        <form onsubmit="processForm(event)">
+            <label for="productName">Product Name:</label>
+            <input type="text" id="productName" required>
+            <br>
+            <label for="price">Price:</label>
+            <input type="number" step="0.01" id="price" required>
+            <br>
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" required>
+            <br>
+            <button type="submit">Submit</button>
+        </form>
+        <div id="receiptInfo"></div>
+    </div>
+<script>
+function calculatePrice(quantity, price) {
+    return quantity * price;
+}
+
+function calculateTax(subtotal, taxRate) {
+    return subtotal * (taxRate / 100);
+}
+
+function displayReceipt(productName, quantity, price, subtotal, taxAmount, finalPrice) {
+    const receiptInfo = `
+        <p><strong>Product Name:</strong> ${productName}</p>
+        <p><strong>Quantity:</strong> ${quantity}</p>
+        <p><strong>Price:</strong> $${price.toFixed(2)}</p>
+        <p><strong>Subtotal:</strong> $${subtotal.toFixed(2)}</p>
+        <p><strong>Tax:</strong> $${taxAmount.toFixed(2)}</p>
+        <p><strong>Total:</strong> $${finalPrice.toFixed(2)}</p>
+    `;
+    document.getElementById('receiptInfo').innerHTML = receiptInfo;
+    console.log("quantity " + quantity);
+    console.log("price "  + price );
+}
+
+
+function processForm(event) {
+    event.preventDefault();
+    const productName = document.getElementById('productName').value;
+    const quantity = parseInt(document.getElementById('quantity').value);
+    const price = parseFloat(document.getElementById('price').value);
+    const taxRate = 8.5; // Assuming tax rate is 8.5%
+
+    const subtotal = calculatePrice(quantity, price);
+    const taxAmount = calculateTax(subtotal, taxRate);
+    const finalPrice = subtotal + taxAmount;
+
+    displayReceipt(productName, quantity, price, subtotal, taxAmount, finalPrice);
+}
+</script>
+
+
+
+</body>
+</html>
